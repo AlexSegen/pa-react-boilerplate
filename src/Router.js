@@ -7,16 +7,25 @@ import {
 
 import Home from './pages/Home';
 import About from './pages/About';
+import Private from './pages/Private';
+
+import Login from  './pages/Login';
 
 const MainRouter = () => {
   return (
     <Router>
         <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
           <Route path="/about">
             <About />
           </Route>
-          <Route path="/">
-            <Home />
+          <Route path="/private">
+            <Private />
+          </Route>
+          <Route path="/login">
+            <Login />
           </Route>
         </Switch>
     </Router>

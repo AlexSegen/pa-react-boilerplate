@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import Router from './Router';
 import * as serviceWorker from './serviceWorker';
+import { firebaseConfig } from './config/firebase.config';
+import {
+  FirebaseAppProvider
+} from 'reactfire';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Router />
-  </React.StrictMode>,
+  <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+    <React.StrictMode>
+      <Suspense fallback={'Cargando...'}>
+        <Router />
+      </Suspense>
+    </React.StrictMode>
+  </FirebaseAppProvider>,
   document.getElementById('root')
 );
 
