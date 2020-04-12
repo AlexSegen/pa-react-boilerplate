@@ -2,8 +2,12 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
+
+import 'firebase/auth';
+import { useUser } from 'reactfire';
 
 import Home from './pages/Home';
 import About from './pages/About';
@@ -21,14 +25,60 @@ const MainRouter = () => {
           <Route path="/about">
             <About />
           </Route>
-          <Route path="/private">
+          <PrivateRoute path="/private">
             <Private />
-          </Route>
-          <Route path="/login">
+          </PrivateRoute>
+          <NoAuthOnlyRoute path="/login">
             <Login />
-          </Route>
+          </NoAuthOnlyRoute>
         </Switch>
     </Router>
+  );
+}
+
+function PrivateRoute({ children, ...rest }) {
+  
+  const isAuthenticated = useUser();
+
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        isAuthenticated ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
+
+function NoAuthOnlyRoute({ children, ...rest }) {
+  
+  const isAuthenticated = useUser();
+
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        !isAuthenticated ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
   );
 }
 
