@@ -7,6 +7,7 @@ import {
 
 import Home from './pages/Home';
 import About from './pages/About';
+import NotFound from './pages/NotFound';
 
 const MainRouter = () => {
   return (
@@ -15,8 +16,11 @@ const MainRouter = () => {
           <Route path="/about">
             <About />
           </Route>
-          <Route path="/">
+          <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="*">
+            <NotFound />
           </Route>
         </Switch>
     </Router>
