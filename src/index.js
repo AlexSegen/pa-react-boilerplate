@@ -1,12 +1,33 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import Router from './Router';
+import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+//Services
+import ApiService from './services/api.service'
+import { TokenService } from './services/storage.service'
+
+//Store
+import { createStore } from 'redux';
+import rootReducers from './store/reducers'
+import { Provider } from 'react-redux'
+
+const store = createStore(rootReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+
+ApiService.init(process.env.REACT_APP_ROOT_API)
+// If token exists set header
+if (TokenService.getToken()) {
+  ApiService.setHeader()
+}
+
 ReactDOM.render(
-  <React.StrictMode>
-    <Router />
-  </React.StrictMode>,
+    <React.StrictMode>
+      <Suspense fallback={'Cargando...'}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+      </Suspense>
+    </React.StrictMode>,
   document.getElementById('root')
 );
 
