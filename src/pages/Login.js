@@ -23,8 +23,8 @@ const Login = () => {
             SetUser.saveUser(res.data)
             
             setLoading(false)
-            dispatch(signIn(true))
             dispatch(setProfile(res.data))
+            dispatch(signIn(true))
         }).catch(err => {
             console.log('Error', err.message);
             setLoading(false)

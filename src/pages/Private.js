@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '../components/Layout';
-import { SetUser } from '../services/storage.service'
+import { useSelector } from 'react-redux'
 
 const Private = () => {
 
-    const [user] = useState(SetUser.getUser())
+    const profile = useSelector(state => state.profile)
+
+    const { first_name, last_name } = profile;
     
     return ( 
         <Layout>
             <div className="text-center">
                 <h1>Private</h1>
-                <p>Hello, <strong>{user.first_name}</strong>.</p>
+    <p>Hello, <strong>{first_name} {last_name}</strong>.</p>
 
                 <p>This is your private section.</p>
             </div>
