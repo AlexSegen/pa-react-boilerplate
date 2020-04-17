@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux'
-import { signIn } from '../store/actions'
+import { signIn, setProfile } from '../store/actions'
 
 import Layout from '../components/Layout';
 
@@ -13,15 +13,21 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     
     const submit = () => {
-        
+        setLoading(true)
         authService.login(email, password).then(res => {
-            dispatch(signIn(res.data))
+            
             TokenService.saveToken(res.data.token)
             SetUser.saveUser(res.data)
+            
+            setLoading(false)
+            dispatch(signIn(true))
+            dispatch(setProfile(res.data))
         }).catch(err => {
             console.log('Error', err.message);
+            setLoading(false)
         })
         
     }
@@ -47,14 +53,14 @@ const Login = () => {
                     <div className="text-left">
                         <div className="form-group">
                             <label htmlFor="email">Email</label>
-                            <input className="form-control" type="email" name="email" onChange={(e) => setEmail(e.target.value) } />
+                            <input className="form-control" type="email" name="email" onChange={(e) => setEmail(e.target.value) } disabled={loading}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
-                            <input className="form-control" type="password" name="password" onChange={(e) => setPassword(e.target.value) }/>
+                            <input className="form-control" type="password" name="password" onChange={(e) => setPassword(e.target.value) } disabled={loading}/>
                         </div>
                         <div className="form-group">
-                            <button onClick={handleSubmit} type="button" className="btn btn-primary">Login</button>
+                            <button onClick={handleSubmit} type="button" className="btn btn-primary" disabled={loading}>{loading ? 'Loading...':'Login'}</button>
                         </div>
                     </div>
                 </div>

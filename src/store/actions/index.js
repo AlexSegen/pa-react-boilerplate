@@ -18,3 +18,10 @@ export const signIn = (auth = false) => {
         payload: auth
     }
 }
+
+export const setProfile = (profile = null) => {
+    return {
+        type: "SET_PROFILE",
+        payload: profile
+    }
+}

@@ -42,7 +42,7 @@ const SetUser = {
     },
     isAdmin(){
         let user = this.getUser();
-        return user != null ? user.role == 'admin' : false
+        return user != null ? user.role === 'admin' : false
     },
     saveUser(user) {
         localStorage.setItem(USER, JSON.stringify(user));

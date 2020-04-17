@@ -18,13 +18,14 @@ const Header = () => {
     }
 
     const isAuth = useSelector(state => state.isAuth);
+    const profile = useSelector(state => state.profile)
 
     return ( 
         <header className={styles.header}>
             <Link className="btn btn-sm btn-link" to='/'>Home</Link>
             <Link className="btn btn-sm btn-link" to='/about'>About</Link>
             { isAuth && <Link className="btn btn-sm btn-link" to='/private'>Private</Link> }
-            { isAuth && <button className="btn btn-sm btn-link" type="button" onClick={SignOut} >Sign Out</button>}
+            { isAuth && <button className="btn btn-sm btn-link" type="button" onClick={SignOut} >{profile.first_name} (Sign Out)</button>}
             { !isAuth &&  <Link className="btn btn-sm btn-link" to='/login'>Login</Link> }
         </header>
      );
