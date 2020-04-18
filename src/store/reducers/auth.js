@@ -34,7 +34,12 @@ export const authReducer = (state = initialState, action) => {
             }
         case LOGOUT:
             authService.logout();
-            return initialState
+            return {
+                ...initialState,
+                loading: false,
+                user: null,
+                isAuthenticated: false
+            }
         default:
             return state
     }
