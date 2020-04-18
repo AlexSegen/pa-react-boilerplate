@@ -7,7 +7,7 @@ import Layout from '../components/Layout';
 const About = () => {
 
     const counter = useSelector(state => state.counter);
-    const isAuth = useSelector(state => state.isAuth);
+    const { isAuthenticated } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     return ( 
@@ -18,7 +18,7 @@ const About = () => {
                 <p>Counter is at: {counter}</p>
                 <button onClick={() => dispatch(increment(5))} type="button">+</button>
                 <button onClick={() => dispatch(decrement())} type="button">-</button>
-                <p>isAuth: { isAuth ? 'Is Logged In' : 'No access' }</p>
+                <p>Session: { isAuthenticated ? 'Is Logged In' : 'No access' }</p>
             </div>
         </Layout>
      );

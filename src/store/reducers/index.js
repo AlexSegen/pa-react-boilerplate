@@ -1,14 +1,12 @@
   
-import {counterReducer} from './counter'
-import {authReducer} from './auth'
-import { profileReducer } from './profile'
-
 import { combineReducers } from 'redux'
 
-const rootReducer = combineReducers( {
+import {counterReducer} from './counter'
+import {authReducer} from './auth'
+
+const rootReducer = combineReducers({
     counter: counterReducer,
-    isAuth: authReducer,
-    profile: profileReducer
+    auth: authReducer
 });
 
 export default rootReducer;

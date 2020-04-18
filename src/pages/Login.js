@@ -1,35 +1,19 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux'
-import { signIn, setProfile } from '../store/actions'
+import { useDispatch, useSelector } from 'react-redux'
+import Auth from '../store/actions/auth'
 
 import Layout from '../components/Layout';
-
-import { authService } from "../services/auth.service";
-import { TokenService, SetUser } from "../services/storage.service";
 
 const Login = () => {
 
     const dispatch = useDispatch();
+    const {loading, error} = useSelector(state => state.auth);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
     
     const submit = () => {
-        setLoading(true)
-        authService.login(email, password).then(res => {
-            
-            TokenService.saveToken(res.data.token)
-            SetUser.saveUser(res.data)
-            
-            setLoading(false)
-            dispatch(setProfile(res.data))
-            dispatch(signIn(true))
-        }).catch(err => {
-            console.log('Error', err.message);
-            setLoading(false)
-        })
-        
+        dispatch(Auth(email, password))
     }
     
     const handleSubmit = async () => {
@@ -59,6 +43,9 @@ const Login = () => {
                             <label htmlFor="password">Password</label>
                             <input className="form-control" type="password" name="password" onChange={(e) => setPassword(e.target.value) } disabled={loading}/>
                         </div>
+                        {
+                            error && <div className="alert text-danger">{error.message}</div>
+                        }
                         <div className="form-group">
                             <button onClick={handleSubmit} type="button" className="btn btn-primary" disabled={loading}>{loading ? 'Loading...':'Login'}</button>
                         </div>

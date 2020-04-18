@@ -44,10 +44,8 @@ const MainRouter = () => {
 
 function PrivateRoute({ children, ...rest }) {
   
-  const isAuthenticated = useSelector(state => state.isAuth);
+  const { isAuthenticated } = useSelector(state => state.auth);
   
-  //!!TokenService.getToken();
-
   return (
     <Route
       {...rest}
@@ -69,7 +67,7 @@ function PrivateRoute({ children, ...rest }) {
 
 function NoAuthOnlyRoute({ children, ...rest }) {
   
-  const isAuthenticated = useSelector(state => state.isAuth);
+  const { isAuthenticated } = useSelector(state => state.auth);
 
   return (
     <Route

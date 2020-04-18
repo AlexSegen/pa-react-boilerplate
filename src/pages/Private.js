@@ -4,16 +4,15 @@ import { useSelector } from 'react-redux'
 
 const Private = () => {
 
-    const profile = useSelector(state => state.profile)
+    const { user } = useSelector(state => state.auth);
 
-    const { first_name, last_name } = profile;
+    const { first_name, last_name } = user;
     
     return ( 
         <Layout>
             <div className="text-center">
                 <h1>Private</h1>
-    <p>Hello, <strong>{first_name} {last_name}</strong>.</p>
-
+                <p>Hello, <strong>{first_name} {last_name}</strong>.</p>
                 <p>This is your private section.</p>
             </div>
         </Layout>
