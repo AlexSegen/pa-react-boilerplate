@@ -7,6 +7,7 @@ const initialState = {
     loading: false,
     user: SetUser.getUser(),
     isAuthenticated: !!TokenService.getToken(),
+    token: !!TokenService.getToken(),
     error: null
 }
 
@@ -23,7 +24,8 @@ export const authReducer = (state = initialState, action) => {
                 loading: false,
                 isAuthenticated: true,
                 user: action.payload,
-                error: ''
+                token: action.payload.token,
+                error: null
             }
         case LOGIN_FAILURE:
             return {
