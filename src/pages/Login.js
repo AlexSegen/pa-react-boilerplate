@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
-import Auth from '../store/actions/auth'
+import { useDispatch, useSelector } from 'react-redux';
+import Auth from '../store/actions/auth';
+
+import validators from '../helpers/validators';
 
 import Layout from '../components/Layout';
 
@@ -11,14 +13,27 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [invalidPayload, setInvalidPayload] = useState(null);
     
     const submit = () => {
-        dispatch(Auth(email, password))
+        dispatch(Auth(email, password));
     }
     
     const handleSubmit = async () => {
-        //Validate variables here
-        submit()
+        
+        setInvalidPayload(null);
+
+        if(!validators.isEmail(email)) {
+            setInvalidPayload('Your email is not valid.');
+            return;
+        }
+
+        if(!validators.password.Length(password)) {
+            setInvalidPayload('Your password must be at least 8 character length.');
+            return;
+        }
+
+        submit();
     }
 
     const styles = {
@@ -46,6 +61,9 @@ const Login = () => {
                         {
                             error && <div className="alert text-danger">{error}</div>
                         }
+                        {
+                            invalidPayload && <div className="alert text-danger">{invalidPayload}</div>
+                        }
                         <div className="form-group">
                             <button onClick={handleSubmit} type="button" className="btn btn-primary" disabled={loading}>{loading ? 'Loading...':'Login'}</button>
                         </div>
@@ -53,7 +71,6 @@ const Login = () => {
                 </div>
             }
             
-
         </Layout>
      );
 }
