@@ -6,9 +6,10 @@ import {
 
 
 class AuthenticationError extends Error {
-    constructor(errorCode, message) {
+    constructor(errorCode, message, data) {
         super(message)
         this.name = this.constructor.name
+        this.data = data;
         this.message = message
         this.errorCode = errorCode
     }
@@ -34,9 +35,9 @@ const authService = {
         try {
             const response = await ApiService.customRequest(requestData)
 
-            TokenService.saveToken(response.data.token)
-            TokenService.saveRefreshToken(response.data.token)
-            SetUser.saveUser(response.data.user);
+            TokenService.saveToken(response.data.data.token);
+            TokenService.saveRefreshToken(response.data.data.token)
+            SetUser.saveUser(response.data.data);
 
             ApiService.setHeader()
 
@@ -46,7 +47,7 @@ const authService = {
 
             return response.data
         } catch (error) {
-            throw new AuthenticationError(error.response.status, error.response.data.message)
+            throw new AuthenticationError(error.response.status, error.response.data.message, error.response.data)
         }
     },
 
@@ -67,7 +68,7 @@ const authService = {
 
             return response.data
         } catch (error) {
-            throw new AuthenticationError(error.response.status, error.response.data.message)
+            throw new AuthenticationError(error.response.status, error.response.data.message, error.response.data)
         }
     },
 

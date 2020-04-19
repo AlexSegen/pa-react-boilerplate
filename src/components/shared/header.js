@@ -23,6 +23,7 @@ const Header = () => {
             { isAuthenticated && <Link className="btn btn-sm btn-link" to='/private'>Private</Link> }
             { isAuthenticated && <button className="btn btn-sm btn-link" type="button" onClick={SignOut} >{user.first_name} (Sign Out)</button>}
             { !isAuthenticated &&  <Link className="btn btn-sm btn-link" to='/login'>Login</Link> }
+            { !isAuthenticated &&  <Link className="btn btn-sm btn-link" to='/register'>Register</Link> }
         </header>
      );
 }

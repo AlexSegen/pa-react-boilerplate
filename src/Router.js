@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound';
 import Private from './pages/Private';
 
 import Login from  './pages/Login';
+import Register from  './pages/Register';
 
 const MainRouter = () => {
   return (
@@ -33,6 +34,9 @@ const MainRouter = () => {
           </PrivateRoute>
           <NoAuthOnlyRoute path="/login">
             <Login />
+          </NoAuthOnlyRoute>
+          <NoAuthOnlyRoute path="/register">
+            <Register />
           </NoAuthOnlyRoute>
           <Route path="*">
             <NotFound />

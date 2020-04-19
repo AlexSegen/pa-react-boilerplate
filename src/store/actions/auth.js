@@ -1,5 +1,4 @@
 import { authService } from "../../services/auth.service";
-import { TokenService, SetUser } from "../../services/storage.service";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -40,14 +39,9 @@ const Auth = (email, password) => {
 
     authService.login(email, password).then(res => {
         
-        TokenService.saveToken(res.data.token);
-        TokenService.saveRefreshToken(res.data.token)
-        SetUser.saveUser(res.data);
-
         dispatch(loginSuccess(res.data));
 
     }).catch(err => {
-        console.log('Error', err.message);
         dispatch(loginFailure(err.message));
     });
 
