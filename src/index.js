@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Router from './Router';
+import Routes from './routes';
 import * as serviceWorker from './serviceWorker';
+
+import { HelmetProvider } from 'react-helmet-async';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router />
+    <HelmetProvider>
+      <Routes />
+    </HelmetProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

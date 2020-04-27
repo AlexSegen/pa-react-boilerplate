@@ -5,13 +5,9 @@ import logo from '../assets/img/logo.svg';
 
 const Home = () => {
 
-    const center = {
-        textAlign: 'center'
-    }
-
     return ( 
         <Layout>
-            <div style={center}>
+            <div className="text-center">
                 <h1>Home</h1>
                 <img src={logo} className={styles.logo} alt="logo"/>
                 <p>This is the Home Page.</p>
