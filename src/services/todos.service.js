@@ -18,7 +18,7 @@ const todosService = {
         }
         try {
             const response = await ApiService.customRequest(requestData)
-            return response.data
+            return response
         } catch (error) {
             if(error.response) {
                 throw new AuthenticationError(error.response.status, error.response.data.message, error.response.data)
@@ -37,7 +37,7 @@ const todosService = {
         try {
             const response = await ApiService.customRequest(requestData)
 
-            return response.data
+            return response
         } catch (error) {
             if(error.response) {
                 throw new AuthenticationError(error.response.status, error.response.data.message, error.response.data)
