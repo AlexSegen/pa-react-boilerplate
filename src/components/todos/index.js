@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {getAll, updateItem} from '../../store/actions/todos';;
+import {getAll, updateItem, removeItem} from '../../store/actions/todos';
+import CreateTodo from './CreateTodo';
 
 const Todos = () => {
 
@@ -20,6 +21,9 @@ const Todos = () => {
     return ( 
         <div style={{ maxWidth: "300px", margin: "0 auto"}}>
             <h5>Todos List</h5>
+            
+            <CreateTodo/>
+            
             <div className="list-group">
                 {
                     loading && "Loading..."
@@ -31,9 +35,12 @@ const Todos = () => {
 
                 {
                   todos && todos.map(item => (
-                        <div  key={item.id} onClick={() => toggleTodo(item)} className="list-group-item list-group-item-action">
-                            
-                            <p className="m-0" style={item.done ? { textDecoration: "line-through"} : null}>{item.title} <br/> <small>{item.created_at}</small></p>
+                        <div  key={item.id} className="list-group-item">
+                            <p onClick={() => toggleTodo(item)} className="m-0" style={item.done ? { textDecoration: "line-through"} : null}>{item.title} 
+                            <br/> <span className="text-muted small">{item.created_at}</span></p>
+                            <button
+                            onClick={() => dispatch(removeItem(item))}
+                             type="button" className="btn btn-sm mt-2 btn-danger">Delete</button>
                         </div>
                     ))
                 }

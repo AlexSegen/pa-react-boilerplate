@@ -1,4 +1,4 @@
-import { REQUEST_START, REQUEST_SUCCESS, REQUEST_FAILED, GET_TODO, GET_TODOS, CREATE_TODO, UPDATE_TODO } from "../actions/todos"
+import { REQUEST_START, REQUEST_SUCCESS, REQUEST_FAILED, GET_TODO, GET_TODOS, CREATE_TODO, UPDATE_TODO, DELETE_TODO } from "../actions/todos"
 
 const initialState = {
     loading: false,
@@ -29,16 +29,35 @@ export const todosReducer = (state = initialState, action) => {
                 error: null
         }
 
-        case UPDATE_TODO:
+        case CREATE_TODO:
+            return {
+                ...state,
+                loading: false,
+                todos: [...state.todos, action.payload],
+                error: null
+        }
 
-            const tmp = state.todos;
-            const index = tmp.findIndex(item => item.id === action.payload.id);
-            tmp[index] = action.payload;
+        case DELETE_TODO:
+
+            let tmp = state.todos;
+            tmp.splice(tmp.findIndex(item => item.id === action.payload.id), 1);
 
             return {
                 ...state,
                 loading: false,
                 todos: tmp,
+                error: null
+        }
+
+        case UPDATE_TODO:
+
+            const upt = state.todos;
+            upt[upt.findIndex(item => item.id === action.payload.id)] = action.payload;
+
+            return {
+                ...state,
+                loading: false,
+                todos: upt,
                 error: null
         }
         

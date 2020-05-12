@@ -46,6 +46,24 @@ const todosService = {
             throw new Error(error);
         }
     },
+    async remove(id) {
+        const requestData = {
+            method: 'DELETE',
+            url: "/todos/" + id
+        }
+
+        try {
+            const response = await ApiService.customRequest(requestData)
+
+            return response
+        } catch (error) {
+            if(error.response) {
+                throw new AuthenticationError(error.response.status, error.response.data.message, error.response.data)
+            }
+
+            throw new Error(error);
+        }
+    },
 
 }
 
