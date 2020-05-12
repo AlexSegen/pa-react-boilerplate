@@ -37,9 +37,9 @@ const Auth = (email, password) => {
     
     dispatch(loginRequest());
 
-    authService.login(email, password).then(res => {
+    authService.login(email, password).then(data => {
         
-        dispatch(loginSuccess(res.data));
+        dispatch(loginSuccess(data));
 
     }).catch(err => {
         dispatch(loginFailure(err.message));

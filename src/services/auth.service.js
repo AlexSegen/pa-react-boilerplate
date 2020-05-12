@@ -5,6 +5,8 @@ import {
 } from './storage.service'
 
 
+
+
 class AuthenticationError extends Error {
     constructor(errorCode, message, data) {
         super(message)
@@ -13,6 +15,16 @@ class AuthenticationError extends Error {
         this.message = message
         this.errorCode = errorCode
     }
+}
+
+const handleErrors = errors => {
+    let error = errors.length > 0 ? errors[0] : { message: "Error Unknown" };
+
+    if(error.messages && error.messages.length > 0) {
+        error = error.messages[0];
+    }
+    
+    return error.message;
 }
 
 const authService = {
@@ -25,9 +37,9 @@ const authService = {
     login: async function (email, password) {
         const requestData = {
             method: 'post',
-            url: "/auth/login/",
+            url: "/auth/local",
             data: {
-                email: email,
+                identifier: email,
                 password: password
             }
         }
@@ -35,9 +47,9 @@ const authService = {
         try {
             const response = await ApiService.customRequest(requestData)
 
-            TokenService.saveToken(response.data.data.token);
-            TokenService.saveRefreshToken(response.data.data.token)
-            SetUser.saveUser(response.data.data);
+            TokenService.saveToken(response.data.jwt);
+            TokenService.saveRefreshToken(response.data.jwt)
+            SetUser.saveUser(response.data.user);
 
             ApiService.setHeader()
 
@@ -47,6 +59,9 @@ const authService = {
 
             return response.data
         } catch (error) {
+            if(error.response && error.response.data) {
+                throw new AuthenticationError(error.response.status, handleErrors(error.response.data.message), error.response.data);
+            }
             throw new AuthenticationError(error.response.status, error.response.data.message, error.response.data)
         }
     },

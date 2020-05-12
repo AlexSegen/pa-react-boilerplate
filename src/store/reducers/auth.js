@@ -19,12 +19,13 @@ export const authReducer = (state = initialState, action) => {
                 loading: true
             }
         case LOGIN_SUCCESS:
+            console.log('LOGIN_SUCCESS', action.payload)
             return {
                 ...state,
                 loading: false,
                 isAuthenticated: true,
-                user: action.payload,
-                token: action.payload.token,
+                user: action.payload.user,
+                token: action.payload.jwt,
                 error: null
             }
         case LOGIN_FAILURE:
