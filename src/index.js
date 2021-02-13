@@ -1,16 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Routes from './routes';
+import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { HelmetProvider } from 'react-helmet-async';
+//Services
+import ApiService from './services/api.service'
+import { TokenService } from './services/storage.service'
+
+//Store
+import AuthContextProvider from './context/authContext'
+import { Provider } from 'react-redux'
+import store from './store';
+
+
+ApiService.init(process.env.REACT_APP_ROOT_API)
+// If token exists set header
+if (TokenService.getToken()) {
+  ApiService.setHeader()
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <HelmetProvider>
-      <Routes />
-    </HelmetProvider>
-  </React.StrictMode>,
+  <AuthContextProvider>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </AuthContextProvider>,
   document.getElementById('root')
 );
 

@@ -1,3 +1,5 @@
+import cookie from "cookie-cutter";
+
 const TOKEN_KEY = 'REACTAPP.TOKEN'
 const USER = 'REACTAPP.USER'
 const REFRESH_TOKEN_KEY = 'REACTAPP.REFRESH_TOKEN'
@@ -10,47 +12,78 @@ const REFRESH_TOKEN_KEY = 'REACTAPP.REFRESH_TOKEN'
 **/
 const TokenService = {
     getToken() {
-        return localStorage.getItem(TOKEN_KEY)
+        return cookie.get(TOKEN_KEY) //localStorage.getItem(TOKEN_KEY)
     },
 
     saveToken(accessToken) {
-        localStorage.setItem(TOKEN_KEY, accessToken)
+        //localStorage.setItem(TOKEN_KEY, accessToken)
+        cookie.set(TOKEN_KEY, accessToken, { path: "/", expires: 3600 })
     },
 
     removeToken() {
-        localStorage.removeItem(TOKEN_KEY)
+       // localStorage.removeItem(TOKEN_KEY)
+        cookie.set(TOKEN_KEY, "", { path: "/", expires: 1 })
     },
 
     getRefreshToken() {
-        return localStorage.getItem(REFRESH_TOKEN_KEY)
+        return cookie.get(REFRESH_TOKEN_KEY) // localStorage.getItem(REFRESH_TOKEN_KEY)
     },
 
     saveRefreshToken(refreshToken) {
-        localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+        //localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+        cookie.set(REFRESH_TOKEN_KEY, refreshToken, { path: "/", expires: 7200 })
     },
 
     removeRefreshToken() {
-        localStorage.removeItem(REFRESH_TOKEN_KEY)
+        //localStorage.removeItem(REFRESH_TOKEN_KEY)
+        cookie.set(REFRESH_TOKEN_KEY, "", { path: "/", expires: 1 })
     }
 
 }
 
 const SetUser = {
     getUser() {
-        let user = localStorage.getItem(USER);
-        return JSON.parse(user)
+        try {
+            let user = localStorage.getItem(USER);
+            return JSON.parse(user)
+        } catch (error) {
+            console.error('error', error.message)
+            return {
+                first_name: ""
+            }
+        }
     },
     isAdmin(){
         let user = this.getUser();
-        return user != null ? user.role == 'admin' : false
+        return user != null ? user.role === 'admin' : false
     },
     saveUser(user) {
         localStorage.setItem(USER, JSON.stringify(user));
     },
 
     removeUser() {
-        localStorage.removeItem(USER)
+        localStorage.removeItem(USER, null)
+    },
+    getPermissions() {
+        const token = TokenService.getToken();
+    
+        if(!token)
+            return [];
+        
+        const splitted = token.split('.');
+
+        
+        const item = splitted.length > 0 ? splitted[1] : null;
+        
+        if(!item)
+        return [];
+        
+        const decoded = JSON.parse(atob(item));
+    
+        return decoded;
+    
     }
 }
+
 
 export { TokenService, SetUser }

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { TokenService } from './services/storage.service'
+import { TokenService } from './storage.service'
 
 const ApiService = {
 
